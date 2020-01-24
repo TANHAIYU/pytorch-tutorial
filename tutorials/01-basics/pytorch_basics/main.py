@@ -27,10 +27,10 @@ x = torch.tensor(1., requires_grad=True)
 w = torch.tensor(2., requires_grad=True)
 b = torch.tensor(3., requires_grad=True)
 
-# Build a computational graph.
+# 建立一个计算图
 y = w * x + b    # y = 2 * x + 3
 
-# Compute gradients.
+# Compute gradients
 y.backward()
 
 # Print out the gradients.
@@ -47,7 +47,7 @@ print(b.grad)    # b.grad = 1
 x = torch.randn(10, 3)
 y = torch.randn(10, 2)
 
-# Build a fully connected layer.
+# 建立一个完全连接的层
 linear = nn.Linear(3, 2)
 print ('w: ', linear.weight)
 print ('b: ', linear.bias)
@@ -59,7 +59,7 @@ optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 # Forward pass.
 pred = linear(x)
 
-# Compute loss.
+# 计算损失
 loss = criterion(pred, y)
 print('loss: ', loss.item())
 
@@ -77,7 +77,7 @@ optimizer.step()
 # linear.weight.data.sub_(0.01 * linear.weight.grad.data)
 # linear.bias.data.sub_(0.01 * linear.bias.grad.data)
 
-# Print out the loss after 1-step gradient descent.
+# 打印出1步梯度下降后的loss
 pred = linear(x)
 loss = criterion(pred, y)
 print('loss after 1 step optimization: ', loss.item())
@@ -117,7 +117,7 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=64, 
                                            shuffle=True)
 
-# When iteration starts, queue and thread start to load data from files.
+# 当迭代开始时，队列和线程开始从文件中加载数据
 data_iter = iter(train_loader)
 
 # Mini-batch images and labels.
@@ -149,7 +149,7 @@ class CustomDataset(torch.utils.data.Dataset):
         # You should change 0 to the total size of your dataset.
         return 0 
 
-# You can then use the prebuilt data loader. 
+# 然后，您可以使用预建的数据加载器
 custom_dataset = CustomDataset()
 train_loader = torch.utils.data.DataLoader(dataset=custom_dataset,
                                            batch_size=64, 
@@ -160,14 +160,14 @@ train_loader = torch.utils.data.DataLoader(dataset=custom_dataset,
 #                        6. Pretrained model                         #
 # ================================================================== #
 
-# Download and load the pretrained ResNet-18.
+# 下载并加载经过预训练的ResNet-18
 resnet = torchvision.models.resnet18(pretrained=True)
 
-# If you want to finetune only the top layer of the model, set as below.
+# 如果只想微调模型的顶层，请进行以下设置。
 for param in resnet.parameters():
     param.requires_grad = False
 
-# Replace the top layer for finetuning.
+# 更换顶层以进行微调。
 resnet.fc = nn.Linear(resnet.fc.in_features, 100)  # 100 is an example.
 
 # Forward pass.

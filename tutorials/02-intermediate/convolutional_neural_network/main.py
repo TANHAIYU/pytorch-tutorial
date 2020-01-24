@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-
+#加载数据这部分将采用 torchvision 和 torch.utils.data 两个模块。
 
 # Device configuration
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -33,6 +33,7 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           shuffle=False)
 
 # Convolutional neural network (two convolutional layers)
+# 之后我们下载数据集中的数据，并且将其转化为张量，同时设置了两个迭代器去访问这些图片数据。
 class ConvNet(nn.Module):
     def __init__(self, num_classes=10):
         super(ConvNet, self).__init__()
@@ -47,7 +48,9 @@ class ConvNet(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.fc = nn.Linear(7*7*32, num_classes)
-        
+
+    # forward(self, x)方法中，表示前向传播的过程，表示数据集中的图片数据先是经过卷积操作，
+    # 再经过池化操作，提取出特征，最后经过全连接层进行分类得到最终的结果。
     def forward(self, x):
         out = self.layer1(x)
         out = self.layer2(out)
@@ -63,6 +66,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
 total_step = len(train_loader)
+# 开始训练
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
         images = images.to(device)

@@ -22,6 +22,10 @@ test_dataset = torchvision.datasets.MNIST(root='../../data',
                                           transform=transforms.ToTensor())
 
 # Data loader (input pipeline)
+# 这一步我们下载对应的数据集，并且设置对应的迭代器去循环这些数据。
+# 其中数据集分为测试集和训练集，所以迭代器也分为测试迭代器和训练迭代器。
+# 其中迭代器中的参数shuffle表示数据是否打乱，在训练的时候我们希望数据是打乱的，
+# 从而使得训练效果更好，但是测试的时候打乱与不打乱的效果其实相差不大，所以就不将其打乱。
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset, 
                                            batch_size=batch_size, 
                                            shuffle=True)
@@ -42,7 +46,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 total_step = len(train_loader)
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
-        # Reshape images to (batch_size, input_size)
+        # 将图像重塑为（batch_size，input_size）
         images = images.reshape(-1, 28*28)
         
         # Forward pass
